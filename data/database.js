@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-let mongoURI = "mongodb://127.0.0.1:27017/express-mvc";
+let mongoURI = "mongodb+srv://kimlong:11112222@kimlongdb.rhfhanc.mongodb.net/express-mvc";
 
 if (process.env.MONGODB_URI) {
   mongoURI = process.env.MONGODB_URI;

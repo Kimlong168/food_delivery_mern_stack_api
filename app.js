@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 const db = require("./data/database");
 const { blacklistedTokens } = require("./middlewares/authMiddleware");
+const enableCors = require("./middlewares/cors");
 const { errorResponse } = require("./utils/responseHelpers");
 
 const categoryRoutes = require("./routers/category.routes");
@@ -15,7 +16,7 @@ const orderRoutes = require("./routers/order.routes");
 const userRoutes = require("./routers/user.routes");
 const authRoutes = require("./routers/auth.routes");
 
-app.use(cors());
+app.use(enableCors);
 app.use(bodyParser.json());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
