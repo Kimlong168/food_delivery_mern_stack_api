@@ -20,8 +20,7 @@ const getCategoryById = async (req, res, next) => {
 };
 
 const createCategory = async (req, res, next) => {
-  // const image = req.file.filename;
-  const image = "1723307690737.jpg";
+  const image = req.file.filename;
   const category = new Category({
     name: req.body.name,
     image: image,
