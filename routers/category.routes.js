@@ -19,7 +19,7 @@ router.post(
   authenticateToken,
   protectRoutes,
   // upload.single("image"),
-  fileUploadValidation,
+  // fileUploadValidation,
   validateCategoryBody(),
   validationMiddleware,
   CategoryController.createCategory
