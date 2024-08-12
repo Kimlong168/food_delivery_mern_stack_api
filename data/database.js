@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 let mongoURI = "mongodb://127.0.0.1:27017/express-mvc";
 
-if (process.env.PORT) {
+if (process.env.MONGODB_URI) {
   mongoURI = process.env.MONGODB_URI;
 }
 
