@@ -18,7 +18,7 @@ router.post(
   "/",
   authenticateToken,
   protectRoutes,
-  upload.single("image"),
+  // upload.single("image"),
   fileUploadValidation,
   validateCategoryBody(),
   validationMiddleware,
