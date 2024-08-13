@@ -1,5 +1,6 @@
 const Product = require("../models/product.model");
 const { successResponse } = require("../utils/responseHelpers");
+const { uploadImage, replaceImage } = require("../utils/uploadImage");
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -22,11 +23,11 @@ const getProductById = async (req, res, next) => {
 };
 
 const createProduct = async (req, res, next) => {
-  const image = req.file.filename;
+  const image = await uploadImage(req.file.path);
 
   const product = new Product({
     name: req.body.name,
-    image: image,
+    image: image.secure_url,
     price: req.body.price,
     category: req.body.category,
     description: req.body.description,
@@ -47,7 +48,8 @@ const updateProduct = async (req, res, next) => {
     product = await Product.findById(req.params.id);
 
     if (req.file) {
-      product.image = req.file.filename;
+      const image = await replaceImage(product.image, req.file.path);
+      product.image = image.secure_url;
     }
     product.name = req.body.name;
     product.price = req.body.price;

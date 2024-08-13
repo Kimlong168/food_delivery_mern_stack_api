@@ -1,5 +1,6 @@
 const Category = require("../models/category.model");
 const { successResponse } = require("../utils/responseHelpers");
+const { uploadImage, replaceImage } = require("../utils/uploadImage");
 
 const getAllCategories = async (req, res, next) => {
   try {
@@ -20,10 +21,11 @@ const getCategoryById = async (req, res, next) => {
 };
 
 const createCategory = async (req, res, next) => {
-  const image = req.file.filename;
+  const image = await uploadImage(req.file.path);
+
   const category = new Category({
     name: req.body.name,
-    image: image,
+    image: image.secure_url,
     description: req.body.description,
   });
   try {
@@ -39,8 +41,10 @@ const updateCategory = async (req, res, next) => {
     const category = await Category.findById(req.params.id);
 
     if (req.file) {
-      category.image = req.file.filename;
+      const image = await replaceImage(category.image, req.file.path);
+      category.image = image.secure_url;
     }
+
     category.name = req.body.name;
     category.description = req.body.description;
 
