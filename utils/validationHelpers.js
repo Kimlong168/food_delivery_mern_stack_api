@@ -26,16 +26,16 @@ const validateOrderBody = () => {
   return [
     body("user").notEmpty().withMessage("User are required."),
     body("products").notEmpty().withMessage("Products are required."),
-    // body("products.*.product")
-    //   .notEmpty()
-    //   .withMessage("Product ID is required.")
-    //   .isMongoId()
-    //   .withMessage("Product ID must be a valid MongoID."),
-    // body("products.*.quantity")
-    //   .notEmpty()
-    //   .withMessage("Product quantity is required.")
-    //   .isInt({ gt: 0 })
-    //   .withMessage("Product quantity must be a positive number."),
+    body("products.*.product")
+      .notEmpty()
+      .withMessage("Product ID is required.")
+      .isMongoId()
+      .withMessage("Product ID must be a valid MongoID."),
+    body("products.*.quantity")
+      .notEmpty()
+      .withMessage("Product quantity is required.")
+      .isInt({ gt: 0 })
+      .withMessage("Product quantity must be a positive number."),
     body("totalPrice")
       .notEmpty()
       .withMessage("Total price is required.")
