@@ -1,6 +1,10 @@
 const Product = require("../models/product.model");
 const { successResponse } = require("../utils/responseHelpers");
-const { uploadImage, replaceImage } = require("../utils/uploadImage");
+const {
+  uploadImage,
+  replaceImage,
+  deleteImage,
+} = require("../utils/uploadImage");
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -65,7 +69,8 @@ const updateProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
+    const product = await Product.findByIdAndDelete(req.params.id);
+    await deleteImage(product.image);
   } catch (err) {
     next(err);
   }

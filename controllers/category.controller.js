@@ -1,6 +1,10 @@
 const Category = require("../models/category.model");
 const { successResponse } = require("../utils/responseHelpers");
-const { uploadImage, replaceImage } = require("../utils/uploadImage");
+const {
+  uploadImage,
+  replaceImage,
+  deleteImage,
+} = require("../utils/uploadImage");
 
 const getAllCategories = async (req, res, next) => {
   try {
@@ -57,7 +61,9 @@ const updateCategory = async (req, res, next) => {
 
 const deleteCategory = async (req, res, next) => {
   try {
-    await Category.findByIdAndDelete(req.params.id);
+    const category = await Category.findByIdAndDelete(req.params.id);
+
+    await deleteImage(category.image);
   } catch (err) {
     next(err);
   }

@@ -28,6 +28,20 @@ const replaceImage = async (url, filePath) => {
   }
 };
 
+const deleteImage = async (url) => {
+  const publicId = getPublicIdFromUrl(url);
+  try {
+    const result = await cloudinary.uploader.destroy(publicId, {
+      invalidate: true, // Optional: Invalidate the cache
+    });
+    console.log("Image deleted successfully:", result);
+    return result;
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    throw error;
+  }
+};
+
 function getPublicIdFromUrl(url) {
   // Use a regular expression to extract the public_id
   const regex = /\/v\d+\/(.+?)\.(jpg|jpeg|png|gif|webp)$/;
@@ -43,4 +57,5 @@ function getPublicIdFromUrl(url) {
 module.exports = {
   uploadImage,
   replaceImage,
+  deleteImage,
 };
