@@ -31,7 +31,6 @@ const createOrder = async (req, res, next) => {
     user: req.body.user,
     products: req.body.products,
     totalPrice: req.body.totalPrice,
-    status: req.body.status,
   });
 
   try {
