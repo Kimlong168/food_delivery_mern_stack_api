@@ -47,12 +47,12 @@ const login = async (req, res, next) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    errorResponse(res, "User not found", 404);
+    return errorResponse(res, "User not found", 404);
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    errorResponse(res, "Invalid password", 401);
+    return errorResponse(res, "Invalid password", 401);
   }
 
   // Create token

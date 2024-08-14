@@ -6,7 +6,7 @@ const protectRoutes = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next(); // User is an admin, proceed to the route
   } else {
-    errorResponse(res, "Forbidden", 403);
+     errorResponse(res, "Forbidden", 403);
   }
 };
 
