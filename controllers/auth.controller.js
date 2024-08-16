@@ -55,8 +55,10 @@ const login = async (req, res, next) => {
     return errorResponse(res, "Invalid password", 401);
   }
 
+  
   // Create token
   const token = jwt.sign({ user }, SECRET_KEY, { expiresIn: "1h" });
+
 
   successResponse(
     res,
