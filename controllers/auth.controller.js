@@ -90,7 +90,7 @@ const refreshToken = async (req, res, next) => {
 
   let userData;
   try {
-    userData = await User.findOne({ email: req.user.email });
+    userData = await User.findOne({ email: req.body.email });
     if (!userData) {
       return errorResponse(res, "User not found", 404);
     }
