@@ -55,14 +55,18 @@ const login = async (req, res, next) => {
     return errorResponse(res, "Invalid password", 401);
   }
 
-  // Create token
+  // Create access token (expires in 1 hour)
   const token = jwt.sign({ user }, SECRET_KEY, { expiresIn: "1h" });
+
+  // Create refresh token (expires in 5h)
+  const refreshToken = jwt.sign({ user }, SECRET_KEY, { expiresIn: "5h" });
 
   successResponse(
     res,
     {
       user,
       token,
+      refreshToken,
     },
     "User logged in successfully"
   );
@@ -81,7 +85,8 @@ const logout = async (req, res, next) => {
 };
 
 const refreshToken = async (req, res, next) => {
-  const token = req.token;
+  const authHeader = req.headers["authorization"];
+  const refreshToken = authHeader && authHeader.split(" ")[1];
 
   let userData;
   try {
@@ -93,15 +98,18 @@ const refreshToken = async (req, res, next) => {
     return errorResponse(res, "User not found", 404);
   }
 
-  if (token) {
-    jwt.verify(token, SECRET_KEY, (err, user) => {
+  if (refreshToken) {
+    jwt.verify(refreshToken, SECRET_KEY, (err, user) => {
       if (err) return errorResponse(res, "Unauthorized", 401);
       const newToken = jwt.sign({ userData }, SECRET_KEY, {
         expiresIn: "1h",
       });
+      const newRefreshToken = jwt.sign({ userData }, SECRET_KEY, {
+        expiresIn: "5h",
+      });
       successResponse(
         res,
-        { token: newToken, user: userData },
+        { token: newToken, refreshToken: newRefreshToken, user: userData },
         "Token refreshed successfully"
       );
     });
