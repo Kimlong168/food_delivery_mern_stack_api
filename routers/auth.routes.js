@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const authController = require("../controllers/auth.controller");
+const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const {
   validateUserBody,
@@ -18,5 +19,7 @@ router.post(
 
 router.post("/login", authController.login);
 router.post("/logout", authController.logout);
+
+router.post("/refresh-token", authenticateToken, authController.refreshToken);
 
 module.exports = router;

@@ -18,6 +18,7 @@ const authenticateToken = (req, res, next) => {
   jwt.verify(token, SECRET_KEY, (err, user) => {
     if (err) return errorResponse(res, "Unauthorized", 401);
     req.user = user.user;
+    req.token = token;
     next();
   });
 };

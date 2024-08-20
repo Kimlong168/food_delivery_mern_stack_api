@@ -11,7 +11,7 @@ function successResponse(
   });
 }
 
-function errorResponse(res, code, message) {
+function errorResponse(res, message, code) {
   return res.status(400).json({
     status: "error",
     error: {

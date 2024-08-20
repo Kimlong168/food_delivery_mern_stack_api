@@ -55,10 +55,8 @@ const login = async (req, res, next) => {
     return errorResponse(res, "Invalid password", 401);
   }
 
-  
   // Create token
   const token = jwt.sign({ user }, SECRET_KEY, { expiresIn: "1h" });
-
 
   successResponse(
     res,
@@ -82,4 +80,29 @@ const logout = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, logout };
+const refreshToken = async (req, res, next) => {
+  const token = req.token;
+
+  try {
+    let userData = await User.findOne({ email: req.user.email });
+    if (!userData) {
+      return errorResponse(res, "User not found", 404);
+    }
+  } catch (err) {
+    return errorResponse(res, "User not found", 404);
+  }
+
+  if (token) {
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err) return errorResponse(res, "Unauthorized", 401);
+      const newToken = jwt.sign({ userData }, SECRET_KEY, {
+        expiresIn: "1h",
+      });
+      successResponse(res, { token: newToken }, "Token refreshed successfully");
+    });
+  } else {
+    errorResponse(res, "No token provided", 400);
+  }
+};
+
+module.exports = { register, login, logout, refreshToken };
