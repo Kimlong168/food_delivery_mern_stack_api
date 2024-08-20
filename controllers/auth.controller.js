@@ -83,8 +83,9 @@ const logout = async (req, res, next) => {
 const refreshToken = async (req, res, next) => {
   const token = req.token;
 
+  let userData;
   try {
-    let userData = await User.findOne({ email: req.user.email });
+    userData = await User.findOne({ email: req.user.email });
     if (!userData) {
       return errorResponse(res, "User not found", 404);
     }
@@ -98,7 +99,11 @@ const refreshToken = async (req, res, next) => {
       const newToken = jwt.sign({ userData }, SECRET_KEY, {
         expiresIn: "1h",
       });
-      successResponse(res, { token: newToken }, "Token refreshed successfully");
+      successResponse(
+        res,
+        { token: newToken, user: userData },
+        "Token refreshed successfully"
+      );
     });
   } else {
     errorResponse(res, "No token provided", 400);
