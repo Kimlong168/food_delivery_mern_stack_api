@@ -101,10 +101,10 @@ const refreshToken = async (req, res, next) => {
   if (refreshToken) {
     jwt.verify(refreshToken, SECRET_KEY, (err, user) => {
       if (err) return errorResponse(res, "Unauthorized", 401);
-      const newToken = jwt.sign({ userData }, SECRET_KEY, {
+      const newToken = jwt.sign({ user: userData }, SECRET_KEY, {
         expiresIn: "1h",
       });
-      const newRefreshToken = jwt.sign({ userData }, SECRET_KEY, {
+      const newRefreshToken = jwt.sign({ user: userData }, SECRET_KEY, {
         expiresIn: "5h",
       });
       successResponse(
