@@ -12,7 +12,7 @@ const {
   validationMiddleware,
 } = require("../utils/validationHelpers");
 
-router.get("/", orderController.getAllOrders);
+router.get("/", authenticateToken, protectRoutes, orderController.getAllOrders);
 router.get("/:id", orderController.getOrderById);
 router.post(
   "/",
